@@ -1,12 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DetailViewComponent from "./DetailViewComponent";
 import SubNavComponent from "./SubNavComponent";
 
 export default function ProductComponent({ data }) {
+  const [items, setItems] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
   const [isSave, setIsSave] = useState(false);
   const [sortOrder, setSortOrder] = useState(null);
+
+  useEffect(() => {
+    setItems(data);
+    console.log("Component mounted: Data loaded into state");
+  }, [data]); 
 
   const toggleBookmark = (id) => {
     setBookmarks((currentList) =>
@@ -14,8 +20,8 @@ export default function ProductComponent({ data }) {
     );
   };
   let displayItems = isSave
-    ? data.filter((item) => bookmarks.includes(item.id))
-    : data;
+    ? items.filter((item) => bookmarks.includes(item.id))
+    : items;
 
   if (sortOrder === "asc") {
     displayItems = [...displayItems].sort((a, b) =>
